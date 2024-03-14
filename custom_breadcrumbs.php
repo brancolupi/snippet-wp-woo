@@ -1,5 +1,8 @@
 // La seguente funzione è da inserire nel file functions.php del thema corrente o all'interno di un plugin esterno
 
+////////////////////////// START CUTOM BREADCRUMBS /////////////////////////////////////////////////////////////////
+
+
 function the_breadcrumb() {
 
     // Definizione del separatore
@@ -21,14 +24,25 @@ function the_breadcrumb() {
 
         echo $starter;
 	
-    // Controlla se la pagina corrente è una categoria, un archivio o una pagina singola. In tal caso mostra la categoria o il nome dell'archivio.
+    // Se la pagina corrente è una categoria, un archivio o una pagina singola. In tal caso mostra la categoria o il nome dell'archivio.
         
         if( is_category() || is_single() ){
 
             if( !is_archive() ){
 
-            echo '&nbsp;' . $separator . '&nbsp;';
-            the_category('title_li=');
+                echo '&nbsp;' . $separator . '&nbsp;';
+                global $post;
+                $page_for_posts_id = get_option('page_for_posts');
+                if ( $page_for_posts_id ){ 
+                    $post = get_post($page_for_posts_id);
+                    setup_postdata($post);
+                    the_title('<a href="'. get_permalink($post->ID) . '">','</a>');
+                    rewind_posts();
+                    wp_reset_postdata();
+                }
+    
+                echo '&nbsp;' . $separator . '&nbsp;';
+                the_category('title_li=');
 
             }
 
@@ -73,13 +87,18 @@ function the_breadcrumb() {
         if( is_single() ){
 
             the_title( '&nbsp;' . $separator . '&nbsp;', '', true );
+
         }
 	
 	// Se la pagina corrente è una pagina statica, mostra il separatore ed il titolo della pagina
         
         if( is_page() ){
 
-             the_title( '&nbsp;' . $separator . '&nbsp;', '', true );
+            if(!is_front_page()){
+
+                the_title( '&nbsp;' . $separator . '&nbsp;', '', true );
+            
+            }
 
         }
 	
@@ -101,6 +120,8 @@ function the_breadcrumb() {
         echo '</p></div>';
 
     }
+
+    ////////////////////////// END CUTOM BREADCRUMBS /////////////////////////////////////////////////////////////////
 
 		
 // Richiamare la funzione all'interno delle pagine desiderate in questo modo

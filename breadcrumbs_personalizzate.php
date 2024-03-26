@@ -1,16 +1,13 @@
-// La seguente funzione è da inserire nel file functions.php del thema corrente o all'interno di un plugin esterno
-
 ////////////////////////// START CUTOM BREADCRUMBS /////////////////////////////////////////////////////////////////
-
-<?php  
+<?php
 
 function the_breadcrumb() {
 
-// Definizione del separatore
+    // Definizione del separatore
 
     $separator = ' <span style="color:#BA2F2F; font-weight:bold;"> » </span> ';
 	
-// Inizia il breadcrumb con un collegamento alla tua home page
+	// Inizia il breadcrumb con un collegamento alla tua home page
 
         $starter = <<<HTML
         <div class="breadcrumbs">
@@ -20,12 +17,13 @@ function the_breadcrumb() {
             flex-wrap: nowrap;
             justify-content: flex-start;
             align-items: center;
+            margin:0;
             "><img src="/wp-content/uploads/2024/03/home_icon.png" style="width:1%;"><a href="/">&nbsp;Home</a>
         HTML;
 
         echo $starter;
 	
-// Se la pagina corrente è una categoria, un archivio o una pagina singola. In tal caso mostra la categoria o il nome dell'archivio.
+    // Se la pagina corrente è una categoria, un archivio o una pagina singola. In tal caso mostra la categoria o il nome dell'archivio.
         
         if( is_category() || is_single() ){
 
@@ -38,7 +36,7 @@ function the_breadcrumb() {
                     $post = get_post($page_for_posts_id);
                     setup_postdata($post);
                     the_title('<a href="'. get_permalink($post->ID) . '">','</a>');
-             	    //rewind_posts();
+                    // rewind_posts();
                     wp_reset_postdata();
                 }
     
@@ -62,7 +60,7 @@ function the_breadcrumb() {
         }
 
 
-// Se la pagina corrente è una pagina categoria di un archivio, visualizzazione il nome dell'archivio ed il nome della categoria
+  	// Se la pagina corrente è una pagina categoria di un archivio, visualizzazione il nome dell'archivio ed il nome della categoria
 
         
         if( is_category() && is_archive() ){
@@ -74,7 +72,7 @@ function the_breadcrumb() {
                 $post = get_post($page_for_posts_id);
                 setup_postdata($post);
                 the_title('<a href="'. get_permalink($post->ID) . '">','</a>');
-            	//rewind_posts();
+                // rewind_posts();
                 wp_reset_postdata();
             }
 
@@ -103,7 +101,7 @@ function the_breadcrumb() {
 
         }
 	
-// Se hai una pagina assegnata come pagina di elenco dei tuoi post. Troverà il titolo della pagina statica e lo visualizzerà. Es. Home >> Blog
+    // Se hai una pagina assegnata come pagina di elenco dei tuoi post. Troverà il titolo della pagina statica e lo visualizzerà. Es. Home >> Blog
         
         if( is_home() ){
             
@@ -113,7 +111,7 @@ function the_breadcrumb() {
                 $post = get_post($page_for_posts_id);
                 setup_postdata($post);
                 the_title( '&nbsp;' . $separator . '&nbsp;', '', true );
-          	//rewind_posts();
+                // rewind_posts();
             }
 
         }
@@ -123,11 +121,10 @@ function the_breadcrumb() {
     }
 
 ?>
-
 ////////////////////////// END CUTOM BREADCRUMBS /////////////////////////////////////////////////////////////////
 
 		
-// Richiamare la funzione all'interno delle pagine desiderate in questo modo
+// Esempio utilizzo
 
 <div class="row align-items-center justify-content-center text-start">
         <div class="col-10 pt-3 pb-3">

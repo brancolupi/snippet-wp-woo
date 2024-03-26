@@ -6,6 +6,8 @@
  * Version:           1.0.0
  * Author:            Lucio Asciolla Full Stack Web Developer
  * Author URI:        https://www.cinquepuntozero.it
+ * Cellulare:	      +393477085217
+ * Email:	      lucio.asciolla@gmail.com
  * License:           GPL v2 or later
  * License URI:       HTTPS://WWW.GNU.ORG/LICENSES/GPL-2.0.HTML
  * Update URI:        HTTPS://EXAMPLE.COM/MY-PLUGIN/

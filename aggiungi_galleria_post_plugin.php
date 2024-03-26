@@ -59,11 +59,13 @@ $_evento_breve_descrizione = get_post_meta( $post->ID, '_evento_breve_descrizion
 					<p 
 					   class="image_remove_button" 
 					   style="position: absolute; top: -2%; right: 0%; background: #BA2F2F; padding: 1% 5%; border-radius: 5px; color: white; cursor:pointer;" 
-					   onclick="
-								this.parentElement.querySelector('.image_view').setAttribute('src', '/wp-content/uploads/2024/03/image_placeholder.jpg');
-								this.parentElement.querySelector('.image_load_input').setAttribute('value', '');
-								"
-					   >Rimuovi</p>
+					   onclick="removeImage(1)"
+					>Rimuovi</p>
+					<p 
+					   class="image_delete_button" 
+					   style="position: absolute; top: 7%; right: 0%; background: #BA2F2F; padding: 1% 5%; border-radius: 5px; color: white; cursor:pointer;" 
+					   onclick="deleteImage(1)"
+					>Elimina</p>
 					<img 
 						 id="image_view_1" 
 						 src="<?php if( get_post_meta( $post->ID, 'image_gallery_1', false) ){ echo get_post_meta( $post->ID, 'image_gallery_1', false); }else{ echo '/wp-content/uploads/2024/03/image_placeholder.jpg'; } ?>" style="width: 100%;"
@@ -73,9 +75,9 @@ $_evento_breve_descrizione = get_post_meta( $post->ID, '_evento_breve_descrizion
 						<input 
 							   id="image_load_input_1" 
 							   type="file" 
-							   name="image_gallery_1" 
+							   name="_image_gallery_1" 
 							   value="" 
-							   onchange="letturaFile(1)";>
+							   onchange="letturaFile(1)">
 					</div>
 					
 					<script>
@@ -91,6 +93,15 @@ $_evento_breve_descrizione = get_post_meta( $post->ID, '_evento_breve_descrizion
 							immagine.src = reader.result; 
 							}
 						}	
+						
+						function removeImage(number){
+							document.getElementById(`image_view_${number}`).setAttribute("src", "/wp-content/uploads/2024/03/image_placeholder.jpg");
+							document.getElementById(`image_load_input_${number}`).setAttribute("value", "");
+						}
+						
+						function deleteImage(number){
+							document.querySelector(`div[image_loader_number="${number}"]`).remove();
+						}
 					</script>
 			
 					
@@ -128,17 +139,19 @@ $_evento_breve_descrizione = get_post_meta( $post->ID, '_evento_breve_descrizion
 					<p 
 					   class="image_remove_button" 
 					   style="position: absolute; top: -2%; right: 0%; background: #BA2F2F; padding: 1% 5%; border-radius: 5px; color: white; cursor:pointer;" 
-					   onclick="
-								this.parentElement.querySelector('.image_view').setAttribute('src', '/wp-content/uploads/2024/03/image_placeholder.jpg');
-								this.parentElement.querySelector('.image_load_input').setAttribute('value', '');
-								"
+					   onclick="removeImage( ${Number(counter_last_image_loader) + 1} );"
 					   >Rimuovi</p>
+					<p 
+					   class="image_delete_button" 
+					   style="position: absolute; top: 7%; right: 0%; background: #BA2F2F; padding: 1% 5%; border-radius: 5px; color: white; cursor:pointer;" 
+					   onclick="deleteImage( ${Number(counter_last_image_loader) + 1} )"
+						>Elimina</p>
 					<img id="image_view_${Number(counter_last_image_loader) + 1}" src="/wp-content/uploads/2024/03/image_placeholder.jpg" 
 					style="width: 100%;"><br>
 					<div class="row mt-2 mb-2 ms-2">
 						<input 
 							id="image_load_input_${Number(counter_last_image_loader) + 1}" 
-							type="file" name="image_gallery_${Number(counter_last_image_loader) + 1}" 
+							type="file" name="_image_gallery_${Number(counter_last_image_loader) + 1}" 
 							value="" 
 							onchange="letturaFile(${Number(counter_last_image_loader) + 1})";
 						>
@@ -155,7 +168,7 @@ $_evento_breve_descrizione = get_post_meta( $post->ID, '_evento_breve_descrizion
             <div class="col-12">
             <p style="color:gray; font-size:0.65rem;">
             post_type: "post"<br>
-            meta_key: "_evento_gallery"<br>
+            meta_key: "_image_gallery_*"<br>
             </p>
             </div>
         </div> 

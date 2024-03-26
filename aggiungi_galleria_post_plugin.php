@@ -34,7 +34,7 @@ function aggiungi_contenuto_interfaccia_metabox_gallery(){
 
 global $post; 
 
-$_evento_breve_descrizione = get_post_meta( $post->ID, '_evento_breve_descrizione', true);
+$__image_gallery = get_post_meta( $post->ID, '_image_gallery', true);
               
 ?> 
 
@@ -73,6 +73,8 @@ $_evento_breve_descrizione = get_post_meta( $post->ID, '_evento_breve_descrizion
 					<br>
 					<div class="row mt-2 mb-2 ms-2">
 						<input 
+							   class="image_load_inputs"
+							   idscreenprint = "1" 
 							   id="image_load_input_1" 
 							   type="file" 
 							   name="_image_gallery_1" 
@@ -150,6 +152,8 @@ $_evento_breve_descrizione = get_post_meta( $post->ID, '_evento_breve_descrizion
 					style="width: 100%;"><br>
 					<div class="row mt-2 mb-2 ms-2">
 						<input 
+						    class="image_load_inputs"
+							idscreenprint = "${Number(counter_last_image_loader) + 1}" 
 							id="image_load_input_${Number(counter_last_image_loader) + 1}" 
 							type="file" name="_image_gallery_${Number(counter_last_image_loader) + 1}" 
 							value="" 
@@ -168,12 +172,21 @@ $_evento_breve_descrizione = get_post_meta( $post->ID, '_evento_breve_descrizion
             <div class="col-12">
             <p style="color:gray; font-size:0.65rem;">
             post_type: "post"<br>
-            meta_key: "_image_gallery_*"<br>
+            meta_key: "_image_gallery"<br>
             </p>
             </div>
         </div> 
 	
 </div> 
+
+<!-- Note di sviluppo:
+Abbiamo tutti gli input immagine raggruppati sotto la classe "image_load_inputs";
+Identificativo univoco numerico per ogni box loader "idScreenPrint";
+L'idea è quella di creare un array multidimensionale del tipo "[5]['/image-5.png']", "[7]['/image-7.png']" da ciclare all'inizio
+e sovrascivere al salvataggio del post.
+Per farlo bisogna creare un input hidden che contenga questo array multidimensionle da elaborare e includere parsato in un singolo metadato.
+Nel contempo è necessario salvare in una folder le immagini caricate.
+-->
      
 <?php 
 
@@ -183,8 +196,8 @@ function salva_dati_gallery_metabox(){
   
 global $post;
           
-if(isset($_POST["_evento_giorno"])) :
-update_post_meta($post->ID, '_evento_giorno', $_POST["_evento_giorno"]);
+if(isset($_POST["_image_gallery"])) :
+update_post_meta($post->ID, '_image_gallery', $_POST["_image_gallery"]);
 endif;
        
 }

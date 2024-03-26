@@ -1,39 +1,39 @@
 
-       <?php 
+<?php 
 
-    //    $categories_level_1 = get_terms(array( 'taxonomy' => 'product_cat','hide_empty' => false, 'parent' => 0 ));
+//    $categories_level_1 = get_terms(array( 'taxonomy' => 'product_cat','hide_empty' => false, 'parent' => 0 ));
         
-    //    foreach($categories_level_1 as $level_1){
+//    foreach($categories_level_1 as $level_1){
 
-    //    echo '[LEVEL 1]--' . $level_1->name . '<br>';
+//    echo '[LEVEL 1]--' . $level_1->name . '<br>';
       
-    //    $categories_level_2 = get_terms( array( 'taxonomy' => 'product_cat', 'hide_empty' => false, 'parent' => $level_1->term_id ) );
+//    $categories_level_2 = get_terms( array( 'taxonomy' => 'product_cat', 'hide_empty' => false, 'parent' => $level_1->term_id ) );
       
-    //    if( count($categories_level_2) > 0 ){
+//    if( count($categories_level_2) > 0 ){
 
-    //         foreach($categories_level_2 as $level_2){
+//         foreach($categories_level_2 as $level_2){
 
-    //             echo '[LEVEL 2]----'  . $level_2->name . '<br>';
+//             echo '[LEVEL 2]----'  . $level_2->name . '<br>';
 
-    //             $categories_level_3 = get_terms( array( 'taxonomy' => 'product_cat', 'hide_empty' => false, 'parent' => $level_2->term_id ) );
+//             $categories_level_3 = get_terms( array( 'taxonomy' => 'product_cat', 'hide_empty' => false, 'parent' => $level_2->term_id ) );
 
-    //             if( count($categories_level_3) > 0 ){
+//             if( count($categories_level_3) > 0 ){
 
-    //                 foreach($categories_level_3 as $level_3){
+//                 foreach($categories_level_3 as $level_3){
 
-    //                     echo '[LEVEL 3]------'  . $level_3->name . '<br>';
+//                     echo '[LEVEL 3]------'  . $level_3->name . '<br>';
 
-    //                 }
+//                 }
                 
-    //             }
+//             }
 
-    //         }
+//         }
        
-    //    }
+//    }
       
-    //    }
+//    }
 
-       ?>
+?>
 
 
         <?php 
@@ -90,10 +90,8 @@
                 </section>
             </div>
 
-            <?php } ?>
-
-
-        <?php  }  ?>
+<?php } ?>
+<?php  }  ?>
 
 
        

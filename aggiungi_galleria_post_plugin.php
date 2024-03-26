@@ -181,7 +181,7 @@ $__image_gallery = get_post_meta( $post->ID, '_image_gallery', true);
 
 <!-- Note di sviluppo:
 Abbiamo tutti gli input immagine raggruppati sotto la classe "image_load_inputs";
-Identificativo univoco numerico per ogni box loader "idScreenPrint";
+Identificativo univoco numerico in un attributo per ogni box loader "idscreenprint";
 L'idea è quella di creare un array multidimensionale del tipo "[5]['/image-5.png']", "[7]['/image-7.png']" da ciclare all'inizio
 e sovrascivere al salvataggio del post.
 Per farlo bisogna creare un input hidden che contenga questo array multidimensionle da elaborare e includere parsato in un singolo metadato.

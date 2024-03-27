@@ -7,7 +7,7 @@
  * Author:            Lucio Asciolla Full Stack Web Developer
  * Author URI:        https://www.cinquepuntozero.it
  * Cellulare:	      +393477085217
- * Email:	          lucio.asciolla@gmail.com
+ * Email:	      lucio.asciolla@gmail.com
  * License:           GPL v2 or later
  * License URI:       HTTPS://WWW.GNU.ORG/LICENSES/GPL-2.0.HTML
  * Update URI:        HTTPS://EXAMPLE.COM/MY-PLUGIN/
@@ -15,47 +15,6 @@
  * Domain Path:       /languages
  */
 ?>
-
-<?php 
-
-///////////// START Abilitare $_FILES aggiungendo "multipart/form-data" al form dei post ///////////////
-if (is_admin()) {
-$current_admin_page = substr(strrchr($_SERVER['PHP_SELF'], '/'), 1, -4);
-if ($current_admin_page == 'page' 
-|| $current_admin_page == 'page-new' 
-|| $current_admin_page == 'post' 
-   || $current_admin_page == 'post-new') {
-
-/** Need to force the form to have the correct enctype. */
-function aggiungi_post_enctype() {
-echo "<script type=\"text/javascript\">
-document.addEventListener('DOMContentLoaded', function() {
-  var postForm = document.getElementById('post');
-  postForm.setAttribute('enctype', 'multipart/form-data');
-  postForm.setAttribute('encoding', 'multipart/form-data');
-});
-</script>";
-}
-
-add_action('admin_head', 'aggiungi_post_enctype');
-}
-}
-///////////// END Abilitare $_FILES aggiungendo "multipart/form-data" al form dei post ///////////////
-
-/////////// START Abilitare BOOTSTAP CSS Framework  C/CDN nella font-end e nel backend ///////////////
-function abilita_bootstrap_css_framework() {
-    wp_enqueue_style( 'bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css' );
-}
-
-add_action('wp_enqueue_scripts', 'abilita_bootstrap_css_framework'); // Front-end
-add_action('admin_enqueue_scripts', 'abilita_bootstrap_css_framework'); // Back-end
-   
-/////////// START Abilitare BOOTSTAP CSS Framework  C/CDN nella font-end e nel backend ///////////////
-
-?>
-
-
-
 
 <?php
 
@@ -237,7 +196,7 @@ $__image_gallery = get_post_meta( $post->ID, '_image_gallery', true);
         </div> 
 	
 		<div>
-			<input type="hidden" id="_esistenti_image_loaders_da_salvare" name="_esistenti_image_loaders_da_salvare" value="">
+		<input type="hidden" id="_esistenti_image_loaders_da_salvare" name="_esistenti_image_loaders_da_salvare" value="">
 		</div>
 
 	
@@ -259,17 +218,54 @@ if(isset( $_POST["_esistenti_image_loaders_da_salvare"] )){
 	$_convert_array_from_string_js = explode( ',', str_replace( '"', '', str_replace( '[', '', str_replace(']', '', $_POST['_esistenti_image_loaders_da_salvare'] ) ) ) );
 	update_post_meta( $post->ID, '_esistenti_image_loaders_da_salvare', $_convert_array_from_string_js );
 
-	foreach($_convert_array_from_string_js as $loader){
-		if( $_FILES[$loader]['name'] != '' ){
-			move_uploaded_file( $_FILES[$loader]['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . '/wp-content/themes/nikolaos/assets/img/post/' . $_FILES[$loader]['name'] );
-			update_post_meta( $post->ID, $loader, '/wp-content/themes/nikolaos/assets/img/post/' . $_FILES[$loader]['name'] );
+	foreach($_FILES as $file){
+		foreach($_convert_array_from_string_js as $loader){
+			move_uploaded_file( $file['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . '/wp-content/themes/nikolaos/assets/img/post/' . $file['name'] );
+			update_post_meta( $post->ID, $loader, '/wp-content/themes/nikolaos/assets/img/post/' . $file['name'] );
 		}
-	}	
-	
+	}
+
 }
 	
 }
           
 add_action('save_post', 'salva_dati_gallery_metabox');
+
+?>
+
+
+<?php 
+
+///////////// START Abilitare $_FILES aggiungendo "multipart/form-data" al form dei post ///////////////
+if(is_admin()){
+$current_admin_page = substr(strrchr($_SERVER['PHP_SELF'], '/'), 1, -4);
+	
+	if($current_admin_page == 'page' || $current_admin_page == 'page-new' || $current_admin_page == 'post' || $current_admin_page == 'post-new'){
+
+		function aggiungi_post_enctype(){
+			echo "<script type=\"text/javascript\">
+			document.addEventListener('DOMContentLoaded', function() {
+			  var postForm = document.getElementById('post');
+			  postForm.setAttribute('enctype', 'multipart/form-data');
+			  postForm.setAttribute('encoding', 'multipart/form-data');
+			});
+			</script>";
+		}
+
+	add_action('admin_head', 'aggiungi_post_enctype');
+		
+	}
+}
+///////////// END Abilitare $_FILES aggiungendo "multipart/form-data" al form dei post ///////////////
+
+/////////// START Abilitare BOOTSTAP CSS Framework  C/CDN nella font-end e nel backend ///////////////
+function abilita_bootstrap_css_framework() {
+    wp_enqueue_style( 'bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css' );
+}
+
+add_action('wp_enqueue_scripts', 'abilita_bootstrap_css_framework'); // Front-end
+add_action('admin_enqueue_scripts', 'abilita_bootstrap_css_framework'); // Back-end
+   
+/////////// START Abilitare BOOTSTAP CSS Framework  C/CDN nella font-end e nel backend ///////////////
 
 ?>

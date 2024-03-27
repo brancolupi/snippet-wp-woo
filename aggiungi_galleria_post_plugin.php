@@ -196,7 +196,11 @@ $__image_gallery = get_post_meta( $post->ID, '_image_gallery', true);
         </div> 
 	
 		<div>
-		<input type="hidden" id="_esistenti_image_loaders_da_salvare" name="_esistenti_image_loaders_da_salvare" value="">
+		<input 
+			   type="hidden" 
+			   id="_esistenti_image_loaders_da_salvare" 
+			   name="_esistenti_image_loaders_da_salvare" 
+			   value="<?php echo implode(',', get_post_meta($post->ID, '_esistenti_image_loaders_da_salvare', true)); ?>">
 		</div>
 
 	

@@ -42,7 +42,7 @@ $__image_gallery = get_post_meta( $post->ID, '_image_gallery', true);
 
 <!-- start metabox container -->
 <div class="container-fluid m-0 p-0"> 
-	 	
+		 	
 		<div class="row mt-4 mb-2 text-center"> 
             <label>Aggungi immagini alla galleria</label><br>
 		</div>
@@ -75,8 +75,6 @@ $__image_gallery = get_post_meta( $post->ID, '_image_gallery', true);
 					<br>
 					<div class="row mt-2 mb-2 ms-2">
 						<input 
-							   class="image_load_inputs"
-							   idscreenprint = "1" 
 							   id="image_load_input_1" 
 							   type="file" 
 							   name="_image_gallery_1" 
@@ -85,6 +83,23 @@ $__image_gallery = get_post_meta( $post->ID, '_image_gallery', true);
 					</div>
 					
 					<script>
+						
+						var _esistenti_image_loaders_da_salvare = [];
+
+						function aggiungi_inputs_name_da_salvare(number){
+							var campoFile = document.getElementById(`image_load_input_${number}`);
+							_esistenti_image_loaders_da_salvare.push(campoFile.getAttribute('name'));
+							document.getElementById('_esistenti_image_loaders_da_salvare').value = JSON.stringify(_esistenti_image_loaders_da_salvare);
+						}
+
+						function rimuovi_inputs_name_da_salvare(number){
+							var campoFile = document.getElementById(`image_load_input_${number}`);
+							var nameCampoFile = campoFile.getAttribute('name');
+							var indexCampoFile = _esistenti_image_loaders_da_salvare.indexOf(nameCampoFile);
+							_esistenti_image_loaders_da_salvare.splice(indexCampoFile, 1);
+							document.getElementById('_esistenti_image_loaders_da_salvare').value = JSON.stringify(_esistenti_image_loaders_da_salvare);
+						}
+						
 						function letturaFile(number){
 							var campoFile = document.getElementById(`image_load_input_${number}`);
 							var immagine = document.getElementById(`image_view_${number}`);	
@@ -96,6 +111,8 @@ $__image_gallery = get_post_meta( $post->ID, '_image_gallery', true);
 							reader.onload = function(event){
 							immagine.src = reader.result; 
 							}
+							
+							aggiungi_inputs_name_da_salvare(number);
 						}	
 						
 						function removeImage(number){
@@ -104,6 +121,7 @@ $__image_gallery = get_post_meta( $post->ID, '_image_gallery', true);
 						}
 						
 						function deleteImage(number){
+							rimuovi_inputs_name_da_salvare(number);
 							document.querySelector(`div[image_loader_number="${number}"]`).remove();
 						}
 					</script>
@@ -154,8 +172,6 @@ $__image_gallery = get_post_meta( $post->ID, '_image_gallery', true);
 					style="width: 100%;"><br>
 					<div class="row mt-2 mb-2 ms-2">
 						<input 
-						    class="image_load_inputs"
-							idscreenprint = "${Number(counter_last_image_loader) + 1}" 
 							id="image_load_input_${Number(counter_last_image_loader) + 1}" 
 							type="file" name="_image_gallery_${Number(counter_last_image_loader) + 1}" 
 							value="" 
@@ -179,16 +195,13 @@ $__image_gallery = get_post_meta( $post->ID, '_image_gallery', true);
             </div>
         </div> 
 	
+		<div>
+			<input type="hidden" id="_esistenti_image_loaders_da_salvare" name="_esistenti_image_loaders_da_salvare" value="">
+		</div>
+
+	
 </div> 
 
-<!-- Note di sviluppo:
-Abbiamo tutti gli input immagine raggruppati sotto la classe "image_load_inputs";
-Identificativo univoco numerico in un attributo per ogni box loader "idscreenprint";
-L'idea è quella di creare un array multidimensionale del tipo "[5]['/image-5.png']", "[7]['/image-7.png']" da ciclare all'inizio
-e sovrascivere al salvataggio del post.
-Per farlo bisogna creare un input hidden che contenga questo array multidimensionle da elaborare e includere parsato in un singolo metadato.
-Nel contempo è necessario salvare in una folder le immagini caricate.
--->
      
 <?php 
 
@@ -197,9 +210,22 @@ Nel contempo è necessario salvare in una folder le immagini caricate.
 function salva_dati_gallery_metabox(){
   
 global $post;
-          
-if(isset($_POST["_image_gallery"])) :
-update_post_meta($post->ID, '_image_gallery', $_POST["_image_gallery"]);
+
+if(isset($_POST["_esistenti_image_loaders_da_salvare"])) :
+	
+update_post_meta($post->ID, '_esistenti_image_loaders_da_salvare', $_POST["_esistenti_image_loaders_da_salvare"]);
+	
+	$_esistenti_image_loaders_da_salvare = json_decode($_POST["_esistenti_image_loaders_da_salvare"]);
+	
+	foreach($_esistenti_image_loaders_da_salvare as $_image_loaders){
+
+		if($_FILES[$_image_loaders]['name'] != ''){
+			move_uploaded_file($_FILES[$_image_loaders]['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . '/wp-content/themes/nikolaos/assets/img/post/' . $_FILES[$_image_loaders]['name']);
+			update_user_meta($user_id, $_image_loaders, '/wp-content/themes/nikolaos/assets/img/post/' . $_FILES[$_image_loaders]['name']);
+		}
+		
+	}	
+	
 endif;
        
 }

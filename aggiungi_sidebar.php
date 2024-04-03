@@ -2,7 +2,7 @@
 
 function register_custom_sidebar() {
 	register_sidebar( array(
-		'name'          => __( 'Mobile Shop Sidebar', 'textdomain' ),
+		'name'          => __( 'Custom Sidebar', 'textdomain' ),
 		'id'            => 'custom-sidebar',
 		'description'   => __( 'I widget in questa sidebar sono mostrati solo nella pagina catalogo-prodotti.', 'textdomain' ),
 		'before_widget' => '<section style="display:flex;">',

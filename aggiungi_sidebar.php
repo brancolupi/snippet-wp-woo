@@ -1,6 +1,6 @@
 <?php
 
-function register_mobile_shop_sidebar() {
+function register_custom_sidebar() {
 	register_sidebar( array(
 		'name'          => __( 'Mobile Shop Sidebar', 'textdomain' ),
 		'id'            => 'custom-sidebar',
@@ -12,7 +12,7 @@ function register_mobile_shop_sidebar() {
 	) );
 }
 
-add_action( 'widgets_init', 'register_mobile_shop_sidebar' );
+add_action( 'widgets_init', 'register_custom_sidebar' );
 
 ?>
 

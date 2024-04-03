@@ -243,4 +243,35 @@ foreach($order as $field){
   }
 
 
+/**
+* MODIFICA DEGLI ATTRIBUTI DEI CAMPI NEL CHECKOUT
+* MAXLENGTH EXEMPLE
+*/
+
+add_filter( 'woocommerce_checkout_fields', 'bbloomer_checkout_fields_custom_attributes', 9999 );
+ 
+function bbloomer_checkout_fields_custom_attributes( $fields ) {
+   	$fields['billing']['billing_first_name']['maxlength'] = 40;
+	$fields['billing']['billing_last_name']['maxlength'] = 40;
+	$fields['billing']['billing_company']['maxlength'] = 40;
+	$fields['billing']['billing_address_1']['maxlength'] = 40;
+	$fields['billing']['billing_address_2']['maxlength'] = 40;
+	$fields['billing']['billing_postcode']['maxlength'] = 15;
+	$fields['billing']['billing_city']['maxlength'] = 40;
+	$fields['billing']['billing_phone']['maxlength'] = 40;
+	$fields['billing']['billing_email']['maxlength'] = 40;
+	$fields['shipping']['shipping_first_name']['maxlength'] = 40;
+	$fields['shipping']['shipping_last_name']['maxlength'] = 40;
+	$fields['shipping']['shipping_company']['maxlength'] = 40;
+	$fields['shipping']['shipping_address_1']['maxlength'] = 40;
+	$fields['shipping']['shipping_address_2']['maxlength'] = 40;
+	$fields['shipping']['shipping_postcode']['maxlength'] = 15;
+	$fields['shipping']['shipping_city']['maxlength'] = 40;
+   return $fields;
+}
+
+
+
+
+
 ?>

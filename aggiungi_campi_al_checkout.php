@@ -248,9 +248,9 @@ foreach($order as $field){
 * MAXLENGTH EXEMPLE
 */
 
-add_filter( 'woocommerce_checkout_fields', 'bbloomer_checkout_fields_custom_attributes', 9999 );
+add_filter( 'woocommerce_checkout_fields', 'checkout_fields_custom_attributes', 9999 );
  
-function bbloomer_checkout_fields_custom_attributes( $fields ) {
+function checkout_fields_custom_attributes( $fields ) {
    	$fields['billing']['billing_first_name']['maxlength'] = 40;
 	$fields['billing']['billing_last_name']['maxlength'] = 40;
 	$fields['billing']['billing_company']['maxlength'] = 40;

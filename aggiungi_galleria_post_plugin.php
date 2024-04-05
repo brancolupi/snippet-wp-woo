@@ -7,7 +7,7 @@
  * Author:            Lucio Asciolla Full Stack Web Developer
  * Author URI:        https://www.cinquepuntozero.it
  * Cellulare:	      +393477085217
- * Email:	          lucio.asciolla@gmail.com
+ * Email:	      lucio.asciolla@gmail.com
  * License:           GPL v2 or later
  * License URI:       HTTPS://WWW.GNU.ORG/LICENSES/GPL-2.0.HTML
  * Update URI:        HTTPS://EXAMPLE.COM/MY-PLUGIN/
@@ -106,21 +106,19 @@ global $post;
 				$_esistenti_image_loaders_urls = [];	
 				foreach($_esistenti_image_loaders_da_salvare as $_esistenti_image_loader){
 				$_esistenti_image_loaders_urls[] = get_post_meta($post->ID, $_esistenti_image_loader, true);
-                // echo $_esistenti_image_loader;
-                // echo get_post_meta($post->ID, $_esistenti_image_loader, true);
 				}
 				//var_dump($_esistenti_image_loaders_urls);
 			?>
 				
 			<input 
-				type="text" 
+				type="hidden" 
 				id="_esistenti_image_loaders_da_salvare" 
 				name="_esistenti_image_loaders_da_salvare" 
 				style="width:100%;"
 				value="<?php echo implode(',', get_post_meta($post->ID, '_esistenti_image_loaders_da_salvare', true)); ?>">
 				
 			<input 
-				type="text" 
+				type="hidden" 
 				id="_esistenti_image_loaders_da_salvare_urls" 
 				name="_esistenti_image_loaders_da_salvare_urls" 
    				style="width:100%;"
@@ -293,8 +291,8 @@ global $post;
             <div class="col-12">
             <p style="color:gray; font-size:0.65rem;">
 				<strong>post_type:</strong> "post"<br>
-				<strong>meta_key:</strong> "_esistenti_image_loaders_da_salvare" (array serializzato)<br>
-				<strong>meta_value:</strong> <?php echo implode(', ', $_esistenti_image_loaders_da_salvare); ?>
+				<strong>meta_key:</strong> "_esistenti_image_loaders_da_salvare" (array serializzato es. a:4:{i:0;s:0:"";i:1;s:16:"_image_gallery_1";i:2;s:16:"_image_gallery_2";i:3;s:16:"_image_gallery_3";} )<br>
+				<strong>meta_value:</strong> <?php echo implode(', ', $_esistenti_image_loaders_da_salvare); ?> (deserializzato)
             </p>
             </div>
         </div> 
@@ -318,17 +316,7 @@ if(isset( $_POST["_esistenti_image_loaders_da_salvare"] )){
 	$_convert_array_from_string_js = explode( ',', str_replace( '"', '', str_replace( '[', '', str_replace(']', '', $_POST['_esistenti_image_loaders_da_salvare'] ) ) ) );
 	update_post_meta( $post->ID, '_esistenti_image_loaders_da_salvare', $_convert_array_from_string_js );
 
-	// foreach($_FILES as $file){
-	// 	foreach($_convert_array_from_string_js as $loader){
-	// 		if($file['tmp_name'] != ''){
-	// 			move_uploaded_file( $file['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . '/wp-content/themes/nikolaos/assets/img/post/' . $file['name'] );
-	// 			update_post_meta( $post->ID, $loader, '/wp-content/themes/nikolaos/assets/img/post/' . $file['name'] );
-	// 		}
-	// 	}
-	// }
-
-
-    $counter_files = 0;
+    $counter_files = 1;
 
     foreach($_FILES as $file){
 
@@ -338,7 +326,6 @@ if(isset( $_POST["_esistenti_image_loaders_da_salvare"] )){
             }
         
             $counter_files++;
-
     }
 
 }

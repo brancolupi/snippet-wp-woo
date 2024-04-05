@@ -131,7 +131,7 @@ global $post;
 			
 			<div id="container_box_image_load" class="row mt-2 mb-2">
 				
-				<!-- START Lavorazione dati e compilazione -->
+				<!-- START Lavorazione dati e compilazione redering -->
 				
 				<script>
 					
@@ -192,11 +192,11 @@ global $post;
 
 						function aggiungi_inputs_name_da_salvare(number){
 							var campoFile = document.getElementById(`image_load_input_${number}`);
-                            if(!_esistenti_image_loaders_da_salvare.includes(campoFile.getAttribute('name'))){
-                                _esistenti_image_loaders_da_salvare.push(campoFile.getAttribute('name'));
-                            }
-   							document.getElementById('_esistenti_image_loaders_da_salvare').value = _esistenti_image_loaders_da_salvare.join(',');
-                        }
+				                            if(!_esistenti_image_loaders_da_salvare.includes(campoFile.getAttribute('name'))){
+				                                _esistenti_image_loaders_da_salvare.push(campoFile.getAttribute('name'));
+				                            }
+   								document.getElementById('_esistenti_image_loaders_da_salvare').value = _esistenti_image_loaders_da_salvare.join(',');
+                        			}
 
 						function rimuovi_inputs_name_da_salvare(number){
 							var campoFile = document.getElementById(`image_load_input_${number}`);
@@ -242,12 +242,12 @@ global $post;
 			
 			all_image_loader_number = document.querySelectorAll('.image_loader');
 			number_of_image_loader_number = all_image_loader_number.length;
-            if(number_of_image_loader_number > 0 ){
-                counter_last_image_loader = all_image_loader_number[number_of_image_loader_number-1].getAttribute('image_loader_number');
-
-            }else{
-                counter_last_image_loader = 0;
-            }
+		            if(number_of_image_loader_number > 0 ){
+		                counter_last_image_loader = all_image_loader_number[number_of_image_loader_number-1].getAttribute('image_loader_number');
+		
+		            }else{
+		                counter_last_image_loader = 0;
+		            }
 
 			console.log(Number(counter_last_image_loader));
 			
@@ -290,9 +290,9 @@ global $post;
         <div class="row mt-3"> 
             <div class="col-12">
             <p style="color:gray; font-size:0.65rem;">
-				<strong>post_type:</strong> "post"<br>
-				<strong>meta_key:</strong> "_esistenti_image_loaders_da_salvare" (array serializzato es. a:4:{i:0;s:0:"";i:1;s:16:"_image_gallery_1";i:2;s:16:"_image_gallery_2";i:3;s:16:"_image_gallery_3";} )<br>
-				<strong>meta_value:</strong> <?php echo implode(', ', $_esistenti_image_loaders_da_salvare); ?> (deserializzato)
+		<strong>post_type:</strong> "post"<br>
+		<strong>meta_key:</strong> "_esistenti_image_loaders_da_salvare" (array serializzato es. a:4:{i:0;s:0:"";i:1;s:16:"_image_gallery_1";i:2;s:16:"_image_gallery_2";i:3;s:16:"_image_gallery_3";} )<br>
+		<strong>meta_value:</strong> <?php echo implode(', ', $_esistenti_image_loaders_da_salvare); ?> (deserializzato)
             </p>
             </div>
         </div> 

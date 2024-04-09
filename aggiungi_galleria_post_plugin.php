@@ -7,7 +7,7 @@
  * Author:            Lucio Asciolla Full Stack Web Developer
  * Author URI:        https://www.cinquepuntozero.it
  * Cellulare:	      +393477085217
- * Email:	      lucio.asciolla@gmail.com
+ * Email:	          lucio.asciolla@gmail.com
  * License:           GPL v2 or later
  * License URI:       HTTPS://WWW.GNU.ORG/LICENSES/GPL-2.0.HTML
  * Update URI:        HTTPS://EXAMPLE.COM/MY-PLUGIN/
@@ -101,24 +101,22 @@ global $post;
 			
 			<?php 
 				$_esistenti_image_loaders_da_salvare = get_post_meta( $post->ID, '_esistenti_image_loaders_da_salvare', true);
-				//var_dump( $_esistenti_image_loaders_da_salvare );
 
 				$_esistenti_image_loaders_urls = [];	
 				foreach($_esistenti_image_loaders_da_salvare as $_esistenti_image_loader){
 				$_esistenti_image_loaders_urls[] = get_post_meta($post->ID, $_esistenti_image_loader, true);
 				}
-				//var_dump($_esistenti_image_loaders_urls);
 			?>
 				
 			<input 
-				type="text" 
+				type="hidden" 
 				id="_esistenti_image_loaders_da_salvare" 
 				name="_esistenti_image_loaders_da_salvare" 
 				style="width:100%;"
 				value="<?php if(get_post_meta($post->ID, '_esistenti_image_loaders_da_salvare', true)!= ''){ echo implode(',', get_post_meta($post->ID, '_esistenti_image_loaders_da_salvare', true)); } ?>">
 				
 			<input 
-				type="text" 
+				type="hidden" 
 				id="_esistenti_image_loaders_da_salvare_urls" 
 				name="_esistenti_image_loaders_da_salvare_urls" 
    				style="width:100%;"
@@ -136,8 +134,13 @@ global $post;
 				<script>
 					
 				var _esistenti_image_loaders_da_salvare = document.getElementById('_esistenti_image_loaders_da_salvare').value;
-					
-					_esistenti_image_loaders_da_salvare_Array_Strs =  _esistenti_image_loaders_da_salvare.split(',');
+										
+				var _esistenti_image_loaders_da_salvare_Array_Strs;
+						if(_esistenti_image_loaders_da_salvare.value != ''){
+							 _esistenti_image_loaders_da_salvare_Array_Strs = _esistenti_image_loaders_da_salvare.split(',')
+						} else {
+							_esistenti_image_loaders_da_salvare_Array_Strs = [];
+						}
 					
 					_esistenti_image_loaders_da_salvare_Array_Ids = [];
 					_esistenti_image_loaders_da_salvare_Array_Strs.forEach(function(image_loader){
@@ -145,8 +148,14 @@ global $post;
 					})
 					
 				var _esistenti_image_loaders_da_salvare_urls = document.getElementById('_esistenti_image_loaders_da_salvare_urls').value;
-					esistenti_image_loaders_da_salvare_urls_Array_Strs =  _esistenti_image_loaders_da_salvare_urls.split(',');
-
+					
+				var _esistenti_image_loaders_da_salvare_urls_Array_Strs;
+						if(_esistenti_image_loaders_da_salvare_urls.value != ''){
+							 _esistenti_image_loaders_da_salvare_urls_Array_Strs = _esistenti_image_loaders_da_salvare_urls.split(',');
+						} else {
+							_esistenti_image_loaders_da_salvare_urls_Array_Strs = [];
+						}
+					
 				console.log(_esistenti_image_loaders_da_salvare_Array_Strs);
 				console.log(_esistenti_image_loaders_da_salvare_Array_Ids);
 					
@@ -154,7 +163,9 @@ global $post;
 				var container_box_image_load_content = '';
 				var _esistenti_image_loaders_da_salvare_Array_Ids_length = _esistenti_image_loaders_da_salvare_Array_Ids.length;
 					
-				for(var x=1; x < _esistenti_image_loaders_da_salvare_Array_Ids_length; x++){
+				if(_esistenti_image_loaders_da_salvare_Array_Ids[0] != ''){	
+					
+				for(var x=0; x < _esistenti_image_loaders_da_salvare_Array_Ids_length; x++){
 					container_box_image_load_content += `
 					<div image_loader_number="${_esistenti_image_loaders_da_salvare_Array_Ids[x]}" class="col-2 image_loader" style="position:relative;">
 						<p 
@@ -164,7 +175,7 @@ global $post;
 						>Elimina</p>
 						<img 
 							 id="image_view_${_esistenti_image_loaders_da_salvare_Array_Ids[x]}" 
-							 src="${esistenti_image_loaders_da_salvare_urls_Array_Strs[x]}" style="width: 100%;"
+							 src="${_esistenti_image_loaders_da_salvare_urls_Array_Strs[x]}" style="width: 100%;"
 							 >
 						<br>
 						<div class="row mt-2 mb-2 ms-2">
@@ -176,8 +187,8 @@ global $post;
 								   onchange="letturaFile(${_esistenti_image_loaders_da_salvare_Array_Ids[x]})">
 						</div></div>`;
 				}
-
-				//console.log(container_box_image_load_content);	
+					
+				}
 				
 				container_box_image_load.innerHTML = container_box_image_load_content;
 					
@@ -192,7 +203,7 @@ global $post;
 						if(document.getElementById('_esistenti_image_loaders_da_salvare').value != ''){
 							 _esistenti_image_loaders_da_salvare = (document.getElementById('_esistenti_image_loaders_da_salvare').value).split(','); 
 						} else {
-							_esistenti_image_loaders_da_salvare  = [];
+							_esistenti_image_loaders_da_salvare = [];
 						}
 
 						function aggiungi_inputs_name_da_salvare(number){
@@ -203,7 +214,7 @@ global $post;
 			                            }
 
    							document.getElementById('_esistenti_image_loaders_da_salvare').value = _esistenti_image_loaders_da_salvare.join(',');
-                      				}
+                        			}
 
 						function rimuovi_inputs_name_da_salvare(number){
 							var campoFile = document.getElementById(`image_load_input_${number}`);
@@ -232,7 +243,6 @@ global $post;
 							rimuovi_inputs_name_da_salvare(number);
 							document.querySelector(`div[image_loader_number="${number}"]`).remove();
 						}
-						
 					</script>
 			
 					
@@ -256,7 +266,7 @@ global $post;
 		            }else{
 		                counter_last_image_loader = 0;
 		            }
-			
+
 			console.log(Number(counter_last_image_loader));
 			
 		}
@@ -324,7 +334,7 @@ if(isset( $_POST["_esistenti_image_loaders_da_salvare"] )){
 	$_convert_array_from_string_js = explode( ',', str_replace( '"', '', str_replace( '[', '', str_replace(']', '', $_POST['_esistenti_image_loaders_da_salvare'] ) ) ) );
 	update_post_meta( $post->ID, '_esistenti_image_loaders_da_salvare', $_convert_array_from_string_js );
 
-    $counter_files = 1;
+    $counter_files = 0;
 
     foreach($_FILES as $file){
 

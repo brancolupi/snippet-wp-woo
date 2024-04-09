@@ -111,18 +111,18 @@ global $post;
 			?>
 				
 			<input 
-				type="hidden" 
+				type="text" 
 				id="_esistenti_image_loaders_da_salvare" 
 				name="_esistenti_image_loaders_da_salvare" 
 				style="width:100%;"
-				value="<?php echo implode(',', get_post_meta($post->ID, '_esistenti_image_loaders_da_salvare', true)); ?>">
+				value="<?php if(get_post_meta($post->ID, '_esistenti_image_loaders_da_salvare', true)!= ''){ echo implode(',', get_post_meta($post->ID, '_esistenti_image_loaders_da_salvare', true)); } ?>">
 				
 			<input 
-				type="hidden" 
+				type="text" 
 				id="_esistenti_image_loaders_da_salvare_urls" 
 				name="_esistenti_image_loaders_da_salvare_urls" 
    				style="width:100%;"
-				value="<?php echo implode(',', $_esistenti_image_loaders_urls); ?>">
+				value="<?php if($_esistenti_image_loaders_urls != ''){ echo implode(',', $_esistenti_image_loaders_urls); } ?>">
 			
 			</div>
 			
@@ -131,7 +131,7 @@ global $post;
 			
 			<div id="container_box_image_load" class="row mt-2 mb-2">
 				
-				<!-- START Lavorazione dati e compilazione redering -->
+				<!-- START Lavorazione dati e compilazione -->
 				
 				<script>
 					
@@ -188,15 +188,22 @@ global $post;
 				
 					<script>
 						
-						var _esistenti_image_loaders_da_salvare = (document.getElementById('_esistenti_image_loaders_da_salvare').value).split(',');
+						var _esistenti_image_loaders_da_salvare;
+						if(document.getElementById('_esistenti_image_loaders_da_salvare').value != ''){
+							 _esistenti_image_loaders_da_salvare = (document.getElementById('_esistenti_image_loaders_da_salvare').value).split(','); 
+						} else {
+							_esistenti_image_loaders_da_salvare  = [];
+						}
 
 						function aggiungi_inputs_name_da_salvare(number){
 							var campoFile = document.getElementById(`image_load_input_${number}`);
-				                            if(!_esistenti_image_loaders_da_salvare.includes(campoFile.getAttribute('name'))){
-				                                _esistenti_image_loaders_da_salvare.push(campoFile.getAttribute('name'));
-				                            }
-   								document.getElementById('_esistenti_image_loaders_da_salvare').value = _esistenti_image_loaders_da_salvare.join(',');
-                        			}
+
+			                            if(!_esistenti_image_loaders_da_salvare.includes(campoFile.getAttribute('name'))){
+			                                _esistenti_image_loaders_da_salvare.push(campoFile.getAttribute('name'));
+			                            }
+
+   							document.getElementById('_esistenti_image_loaders_da_salvare').value = _esistenti_image_loaders_da_salvare.join(',');
+                      				}
 
 						function rimuovi_inputs_name_da_salvare(number){
 							var campoFile = document.getElementById(`image_load_input_${number}`);
@@ -225,6 +232,7 @@ global $post;
 							rimuovi_inputs_name_da_salvare(number);
 							document.querySelector(`div[image_loader_number="${number}"]`).remove();
 						}
+						
 					</script>
 			
 					
@@ -248,7 +256,7 @@ global $post;
 		            }else{
 		                counter_last_image_loader = 0;
 		            }
-
+			
 			console.log(Number(counter_last_image_loader));
 			
 		}
@@ -292,7 +300,7 @@ global $post;
             <p style="color:gray; font-size:0.65rem;">
 		<strong>post_type:</strong> "post"<br>
 		<strong>meta_key:</strong> "_esistenti_image_loaders_da_salvare" (array serializzato es. a:4:{i:0;s:0:"";i:1;s:16:"_image_gallery_1";i:2;s:16:"_image_gallery_2";i:3;s:16:"_image_gallery_3";} )<br>
-		<strong>meta_value:</strong> <?php echo implode(', ', $_esistenti_image_loaders_da_salvare); ?> (deserializzato)
+		<strong>meta_value:</strong> <?php if($_esistenti_image_loaders_da_salvare != ''){ echo implode(', ', $_esistenti_image_loaders_da_salvare); } ?> (deserializzato)
             </p>
             </div>
         </div> 

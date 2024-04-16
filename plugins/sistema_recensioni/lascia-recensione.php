@@ -35,6 +35,7 @@
 		
 		<div class="row align-items-start justify-content-center text-start mt-2 mb-5">
 			<p id="notifica_recensione" style="color:#007fff; font-weight:bold;"></p>
+			<?php //echo do_shortcode('[percentuale_voti]'); ?>
 		</div>
 		
 	</form>

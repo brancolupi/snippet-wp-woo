@@ -3,32 +3,33 @@
 function recensioni_custom_post_type() {
 	register_post_type('recensioni',
 		array(
-			'labels'      => array(
-				'name'          => __('Recensioni', 'textdomain'),
-				'singular_name' => __('Recensione', 'textdomain'),
-			),
-			'supports'    => array(
+		'labels'      => array(
+		'name'          => __('Recensioni', 'textdomain'),
+		'singular_name' => __('Recensione', 'textdomain'),
+		),
+		'supports'    => array(
                 'title',
-//                 'editor',
-//                 'custom-fields',
-            ),
-			'public'      => true,
-			'has_archive' => true,
+//              'editor',
+//              'custom-fields',
+            	),
+		'public'      => true,
+		'has_archive' => true,
 		)
 	);
 }
+
 add_action('init', 'recensioni_custom_post_type');
 
 function recensioni_add_custom_box() {
 		add_meta_box(
-			'recensioni_box_id',    // Unique ID
-			'Dettagli recensione',  // Box title
-			'recensioni_custom_box_html', // Content callback, must be of type callable
-			'recensioni'  // Post type
+		'recensioni_box_id',    // Unique ID
+		'Dettagli recensione',  // Box title
+		'recensioni_custom_box_html', // Content callback, must be of type callable
+		'recensioni'  // Post type
 		);
 }
-add_action( 'add_meta_boxes', 'recensioni_add_custom_box' );
 
+add_action( 'add_meta_boxes', 'recensioni_add_custom_box' );
 
 function recensioni_custom_box_html( $post ) {
 ?>
@@ -113,7 +114,34 @@ function media_voti_clienti_in_percentuale(){
 	$media_voti = $somma_voti / $numero_recensioni;
 	$percentuale_voti = $media_voti * 20;
 
-	return $percentuale_voti;
+	// 	return $percentuale_voti;
+
+	return <<<HTML
+	
+	<div class="elementor-element elementor-element-561a45d style-two elementor-widget elementor-widget-counter" data-id="561a45d" data-element_type="widget" data-widget_type="counter.default">
+			<div class="elementor-widget-container">
+				<div class="single_counter default_style text-center">
+					<div class="single_counter_inner">					
+						<div class="counter_icon">			
+							<i class="flaticon-award"></i>		
+						</div>
+										
+						<div class="countr_text">
+							<h1>$percentuale_voti</h1>
+							<h3>%</h3>
+						</div>
+
+						<div class="counter_title">
+							<h4>Soddifazione clienti</h4>
+							<p style="font-size: 0.7rem;">Basato su $numero_recensioni recensioni</p>
+						</div>	
+					
+					</div>
+				</div>
+			</div>
+	</div>
+	
+	HTML;
 
 }
 

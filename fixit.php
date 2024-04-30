@@ -18,6 +18,7 @@ global $woocommerce;
 global $wordpress;
 
 ////////////////////////// Upgrade maximum upload size //////////////////////////
+// Link utile: https://kinsta.com/blog/increase-max-upload-size-wordpress/
 
 // functions.php
 ini_set( 'upload_max_size' , '256M' );

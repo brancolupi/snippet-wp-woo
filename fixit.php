@@ -17,7 +17,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/wp-load.php');
 global $woocommerce;
 global $wordpress;
 
-///////////////// Upgrade maximum upload size ///////////////
+////////////////////////// Upgrade maximum upload size //////////////////////////
 
 // functions.php
 ini_set( 'upload_max_size' , '256M' );

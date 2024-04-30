@@ -1,0 +1,53 @@
+In wordpress la "Internationalize" consente di gestire le varie versioni, per versioni intendiamo traduzioni, dei contenuti all'interno di layout, 
+template di pagina e/o componenti attraverso l'utilizzo della funzione _e()
+In realtà esistono ben più opzioni per completezza allego link: https://developer.wordpress.org/plugins/internationalization/how-to-internationalize-your-plugin/
+
+<div>
+<p><?php _e('Lorem Ipsum', 'text-domanin'); ?></p>
+</div>
+
+Il text-domanin deve essere passato sottoforma di stringa e rappresenta una identificativo che collega le "stringhe", i contenuti ad un determianto tema o plugin.
+Sarà necessario specificarlo nel file style.css del thema
+
+/**
+ * Theme Name: KITOKO
+ * Theme URI: www.holly.agency
+ * Version: 1.0.0
+ * Requires PHP: 8.1.28
+ * Text Domain: kitoko
+ * Domain Path: /languages
+ * Template:   twentynineteen
+ * Author: Lucio Asciolla
+ * Author URI: www.cinquepuntozero.it
+ */ 
+
+Qui ho assegnato "kitoko" come text-domanin dovremo quindi sostituire nello snippet precedente il nome cosi:
+
+<?php _e('Lorem Ipsum', 'kitoko'); ?>
+
+
+Nell'ambito della gestione delle lingue entrano in gioco i file .po ed il file .pot
+
+
+kitoko.pot  rappresenterà il template 
+
+kitoko-it_IT.po la traduzione in lingua italiana
+kitoko-en_US.po la traduzione in lingua inglese
+
+Abbiamo necessità di avere un file template, il quale sostanzialmente recupererà tutte le stringhe che il sito contiene legate al text-domain e che abbiamo aggiunto con la funzione _e()
+I file .po invece conterranno le traduzione in lingua delle stesse.
+Personalmente ho utilizzato il pligin "Loco Translate" per gestire questi file e la loro generazione.
+Il file template necessità di periodiche sincronizzazioni affinche siano mostrate le stringhe da tradurre nelle varie lingue.
+
+Alcune note aggiuntive:
+
+set_customer_session_cookie() 
+si occupa di recuperare ed utilizzare la PHPSESSIONID memorizzata nei cookies per impostare l'id per i clienti ospiti nel database
+in alternativa se non loggati la WC()->session non funzionerebbe.
+
+switch_to_locale() 
+si impostara la lingua tra quelle disponibili
+
+
+
+

@@ -20,6 +20,9 @@
 // echo '</pre>';
 ?>
 
+
+
+
 <?php
 
 // FUNZIONE >> nome_attributi_associati_al_prodotto()
@@ -107,16 +110,24 @@ $variations = wc_get_products( $args );
 $__array_combo_variazioni_prodotto = [];
 $counter = 0;
 
+$___attributes = nome_attributi_associati_al_prodotto_parent($product_id);
+
 foreach($variations as $variation){
 
     $id = $variation->get_id();
 
     $__array_combo_variazioni_prodotto[$counter]['product_varation_id'] = $id;
     $__array_combo_variazioni_prodotto[$counter]['product_parent_id'] = $product_id;
-    $taglia = $variation->get_attribute('pa_taglia');
-    $__array_combo_variazioni_prodotto[$counter]['pa_taglia'] = $taglia;
-    $colore = $variation->get_attribute('pa_colore');
-    $__array_combo_variazioni_prodotto[$counter]['pa_colore'] = $colore;
+    // $taglia = $variation->get_attribute('pa_taglia');
+    // $__array_combo_variazioni_prodotto[$counter]['pa_taglia'] = $taglia;
+    // $colore = $variation->get_attribute('pa_colore');
+    // $__array_combo_variazioni_prodotto[$counter]['pa_colore'] = $colore;
+    foreach($___attributes as $attribute_name){
+        $attribute = $variation->get_attribute($attribute_name);
+        $__array_combo_variazioni_prodotto[$counter][$attribute_name] = $attribute;
+    }
+
+
     $counter++;
 
 } ?>

@@ -1,4 +1,5 @@
 <?php
+
 // echo '<pre>';
 // $product_exemple = wc_get_product( 80 );
 // echo "Generale - nome degli attributi disponibili <br>";
@@ -22,120 +23,121 @@
 
 
 
+<?php
+/**
+* Plugin Name: Play with product's attributes
+* Plugin URI: https://www.cinquepuntozero.it/
+* Description: Funzioni speciali custom
+* Version: 1.0.0
+* Author: Lucio Asciolla
+* Author URI: https://www.cinquepuntozero.it/
+**/
+?>
 
 <?php
 
-// FUNZIONE >> nome_attributi_associati_al_prodotto()
-// ARGOMENTO >> product_parent_id (number) 
-// RETURN >> array (of string) dei nomi degli attributi associati
-
-function nome_attributi_associati_al_prodotto_parent($product_parent_id){
-    $___product = wc_get_product( $product_parent_id );
+function nomi_attributi_del_prodotto($product_id){
+    $___product = wc_get_product( $product_id );
     $___array_of_string = [];
     foreach($___product->get_attributes() as $attribute){ $___array_of_string[] = $attribute["name"]; } ?>
-    <pre><?php var_dump($___array_of_string); ?></pre>
+    <pre><?php //var_dump($___array_of_string); ?></pre>
     <?php return $___array_of_string;
 }
 
-// Esempio utilizzo
-nome_attributi_associati_al_prodotto_parent(80);
+// Esempio
+// Uso:  nomi_attributi_del_prodotto(get_the_ID()); OR nomi_attributi_del_prodotto(80);
+// Output: ['pa_taglia','pa_colore']
+// Note: Estrae i nomi degli attributi. Uso indipendente da se si tratta di un prodotto singolo o variabile
 
-?>
 
-<?php
-
-// FUNZIONE >> valori_dell_attributo_associati_al_prodotto() 
-// ARGOMETI >> product_parent_id (number), name_of_attribute (string) 
-// RETURN >> array (of string) dei valori dell'attributo associati al prodotto
-
-function valori_dell_attributo_associati_al_prodotto_parent($product_parent_id, $name_of_attribute){
-    $___product = wc_get_product( $product_parent_id );
+function valori_attributi_del_prodotto_single($product_id, $name_of_attribute){
+    $___product = wc_get_product( $product_id );
     $__string_values = str_replace(' ', '', $___product->get_attribute( $name_of_attribute ));
     $__array_values = explode(',', $__string_values); ?>
-    <pre><?php var_dump($__array_values); ?></pre>
+    <pre><?php //var_dump($__array_values); ?></pre>
     <?php return $__array_values;
 }
 
-// Esempio utilizzo
-valori_dell_attributo_associati_al_prodotto_parent(80, 'pa_taglia');
-valori_dell_attributo_associati_al_prodotto_parent(80, 'pa_colore');
+// Esempio
+// Uso:  valori_attributi_del_prodotto_single(get_the_ID(), 'pa_taglia'); 
+// Output: ['36','37', '38' ...]
+// Note: Estrae da un prodotto single tutti i valori contenuti negli attributi che non sviluppano variazioni ma che sono state agganciate all'interno del prodotto.
 
-?>
-
-<?php
-
-// FUNZIONE >> lista_id_dei_prodotti_variazione_di_un_prodotto_parent() 
-// ARGOMENTI >> product_parent_id (number) 
-// RETURN >> array (of number) degli id degli articoli child varation del prodotto
-
-function lista_id_dei_prodotti_variazione_di_un_prodotto_parent($product_parent_id){
-    $___product_parent = wc_get_product($product_parent_id);
+function lista_id_dei_prodotti_variazione($product__id){
+    $___product_parent = wc_get_product($product__id);
     $__list_products_varation = $___product_parent->get_children(); ?>
-    <pre><?php var_dump($__list_products_varation); ?></pre>
+    <pre><?php //var_dump($__list_products_varation); ?></pre>
     <?php return $__list_products_varation;
 }
 
-// Esempio utilizzo
-lista_id_dei_prodotti_variazione_di_un_prodotto_parent(80);
+// Esempio
+// Uso:  lista_id_dei_prodotti_variazione(get_the_ID()); 
+// Output: ['205','206', '207' ...]
+// Note: Estrae da l'id di un product-parent la lista degli id dei product-varation
 
-?>
 
-<?php
-
-// FUNZIONE >> valori_dell_attributo_associati_al_prodotto_varation() 
-// ARGOMETI >> product_varation_id (number), name_of_attribute (string) 
-// RETURN >> array (of string) dei valori dell'attributo associati al prodotto variazione
-
-function valori_dell_attributo_associati_al_prodotto_varation($product_varation_id, $name_of_attribute){
-    $___product = wc_get_product( $product_varation_id );
-    $__string_values = str_replace(' ', '', $___product->get_attribute( $name_of_attribute ));
-    $__array_values = explode(',', $__string_values); ?>
-    <pre><?php var_dump($__array_values); ?></pre>
-    <?php return $__array_values;
-}
-
-// Esempio utilizzo
-valori_dell_attributo_associati_al_prodotto_varation(205, 'pa_taglia');
-valori_dell_attributo_associati_al_prodotto_varation(205, 'pa_colore');
-
-?>
-
-<?php
-
-function lista_combo_variazioni_prodotto_parent($product_id){
+function lista_combo_variazioni_prodotto($product_id){
 
 $args = array( 'parent' => $product_id, 'type' => 'variation' );
 $variations = wc_get_products( $args );
 
-$__array_combo_variazioni_prodotto = [];
+$___array_combo_variazioni_prodotto = [];
 $counter = 0;
 
-$___attributes = nome_attributi_associati_al_prodotto_parent($product_id);
+$___attributes = nomi_attributi_del_prodotto($product_id);
 
 foreach($variations as $variation){
 
     $id = $variation->get_id();
 
-    $__array_combo_variazioni_prodotto[$counter]['product_varation_id'] = $id;
-    $__array_combo_variazioni_prodotto[$counter]['product_parent_id'] = $product_id;
-    // $taglia = $variation->get_attribute('pa_taglia');
-    // $__array_combo_variazioni_prodotto[$counter]['pa_taglia'] = $taglia;
-    // $colore = $variation->get_attribute('pa_colore');
-    // $__array_combo_variazioni_prodotto[$counter]['pa_colore'] = $colore;
+    $___array_combo_variazioni_prodotto[$counter]['product_varation_id'] = $id;
+    $___array_combo_variazioni_prodotto[$counter]['product_parent_id'] = $product_id;
     foreach($___attributes as $attribute_name){
         $attribute = $variation->get_attribute($attribute_name);
-        $__array_combo_variazioni_prodotto[$counter][$attribute_name] = $attribute;
+        $___array_combo_variazioni_prodotto[$counter][$attribute_name] = $attribute;
     }
-
 
     $counter++;
 
 } ?>
 
-<pre><?php var_dump($__array_combo_variazioni_prodotto); ?><?php
+<pre><?php //var_dump($___array_combo_variazioni_prodotto); ?><?php
 
 }
 
-lista_combo_variazioni_prodotto_parent(80);
+// Esempio
+// Uso:  lista_combo_variazioni_prodotto(get_the_ID()); 
+// Output: 
+// 	Array(5){
+// 		[0] =>
+// 			['product_varation_id'] => 205,
+// 			['product_parent_id'] => 80,
+// 			['pa_taglia'] => '37',
+// 			['pa_colore'] => 'Verde',
+// 		[1] =>
+// 	...
+// Note: Estrae un array multidimensionale di tutte le variazioni completi di tutti i dati
+
+
+function valori_attributi_del_prodotto_varation($product_id, $attribute_name){
+
+$args = array( 'parent' => $product_id, 'type' => 'variation' );
+$variations = wc_get_products( $args );
+
+$___array_variazioni_prodotto = [];
+
+foreach($variations as $variation){ $___array_variazioni_prodotto[] = $variation->get_attribute($attribute_name); } ?>
+
+<pre><?php //var_dump($___array_variazioni_prodotto); ?></pre><?php
+	
+return $___array_variazioni_prodotto;
+
+}
+
+// Esempio
+// Uso:  valori_attributi_del_prodotto_varation(get_the_ID(), 'pa_taglia'); 
+// Output: ['36','37', '38' ...]
+// Note: Estrae da un prodotto variable tutti i valori contenuti nelle variazioni.
+
 
 ?>

@@ -21,11 +21,11 @@ add_action('after_setup_theme', 'custom_hide_admin_bar');
 
 <?php
 
-function get_current_user_role($ruolo){
+function current_user_has_the_role($role_name){
     global $user;
     if( isset( $user->roles ) && is_array( $user->roles ) ){
         // if( in_array( 'Pending', $user->roles ) ){
-        if( in_array( $ruolo, $user->roles ) ){
+        if( in_array( $role_name, $user->roles ) ){
             return true;
         }else{
             return false;

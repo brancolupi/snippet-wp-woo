@@ -21,16 +21,23 @@ add_action('after_setup_theme', 'custom_hide_admin_bar');
 
 <?php
 
-function current_user_has_the_role($role_name){
-    global $user;
+function has_the_role($user, $role_name){
+
     if( isset( $user->roles ) && is_array( $user->roles ) ){
-        // if( in_array( 'Pending', $user->roles ) ){
-        if( in_array( $role_name, $user->roles ) ){
+        if( in_array(  $role_name, $user->roles ) ){
+            echo "SI, l'utente ha il ruolo: " . $role_name;
             return true;
         }else{
+            echo "NO, l'utente non ha il ruolo: " . $role_name;
             return false;
         }
+    }else{
+        echo 'Non è stato possibile recuperare ruoli degli utenti.';
     }
 }
+
+
+// Usage exemple
+<p><?php has_the_role( wp_get_current_user(), 'administrator' ); ?></p>
 
 ?>

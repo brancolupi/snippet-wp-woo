@@ -9,7 +9,7 @@ add_role( 'Rivenditore', 'rivenditore_capability', array('read'=> true) );
 function custom_hide_admin_bar() {
     // Verifica il ruolo dell'utente attuale
     if ( current_user_can('rivenditore_capability') ) {
-        // Nascondi la barra di amministrazione per gli utenti con il ruolo "Subscriber"
+        // Nascondi la barra di amministrazione per gli utenti con il ruolo "Rivenditore"
         show_admin_bar(false);
     }
 }

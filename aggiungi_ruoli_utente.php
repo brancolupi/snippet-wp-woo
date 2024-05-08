@@ -21,8 +21,9 @@ add_action('after_setup_theme', 'custom_hide_admin_bar');
 
 <?php
 
-function current_user_has_the_role($user, $role_name){
-
+// function current_user_has_the_role($user, $role_name){
+function current_user_has_the_role($role_name){
+$user = wp_get_current_user();
     if( isset( $user->roles ) && is_array( $user->roles ) ){
         if( in_array(  $role_name, $user->roles ) ){
             echo "SI, l'utente ha il ruolo: " . $role_name;
@@ -38,6 +39,9 @@ function current_user_has_the_role($user, $role_name){
 
 
 // Usage exemple
-<p><?php current_user_has_the_role( wp_get_current_user(), 'administrator' ); ?></p>
+// <p><?php current_user_has_the_role( wp_get_current_user(), 'administrator' ); ?></p>
+<p><?php current_user_has_the_role( 'administrator' ); ?></p>
+<p><?php current_user_has_the_role( 'Rivenditore' ); ?></p>
+
 
 ?>

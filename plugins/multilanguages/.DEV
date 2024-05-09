@@ -50,7 +50,7 @@ si impostara la lingua tra quelle disponibili
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Le traduzioni sono applicabili a strighe "satiche" prensenti nei vari layout o template ma non sono applicabili a pagine generate dinamicamente.
+Le traduzioni sono applicabili a strighe "statiche" prensenti nei vari layout o template ma non sono applicabili a pagine generate dinamicamente.
 Nel caso dei post o dei prodotti woocommerce abbiamo un unico file single-post.php che genera le pagine di tutti i prodotti/articoli.
 
 L'unica soluzione possibile è quella di creare un metabox che consenta di salvare dei metadati relativi alle traduzioni dei vari campi come "title" o "content".

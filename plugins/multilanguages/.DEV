@@ -48,6 +48,22 @@ in alternativa se non loggati la WC()->session non funzionerebbe.
 switch_to_locale() 
 si impostara la lingua tra quelle disponibili
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Le traduzioni sono applicabili a strighe "satiche" prensenti nei vari layout o template ma non sono applicabili a pagine generate dinamicamente.
+Nel caso dei post o dei prodotti woocommerce abbiamo un unico file single-post.php che genera le pagine di tutti i prodotti/articoli.
+
+L'unica soluzione possibile è quella di creare un metabox che consenta di salvare dei metadati relativi alle traduzioni dei vari campi come "title" o "content".
+E' necessario inoltre agganciarsi allo switcher-language ed al valore memorizzato nella session e definire funzioni che in base al valore attuale in sessione 
+possa restituire il campo "get_the_title()" o il relativo meta dato es. "__eng_product_title".
+
+Nel file "product_translation.php" ho definito nuove funzioni, che utilizzo nei layout, "tl_get_the_title()" che crea una logica di recupero del titolo in base alla lingua selezionata.
+Un altra soluzione è quella di utilizzare l'hook "add_filter".
+
+Nota: Non è possibile effettuare l'override della funzione get_the_title() all'interno del core woocommerce e nello specifico nel file wp-includes/post-template.php
+In realtà lo è se operiramo sullo stesso file. Ma al primo aggiornamento del plugin woocommerce perderemmo tutte le modifiche.
+
+
 
 
 

@@ -60,8 +60,9 @@ possa restituire il campo "get_the_title()" o il relativo meta dato es. "__eng_p
 Nel file "product_translation.php" ho definito nuove funzioni, che utilizzo nei layout, "tl_get_the_title()" che crea una logica di recupero del titolo in base alla lingua selezionata.
 Un altra soluzione è quella di utilizzare l'hook "add_filter".
 
-Nota: Non è possibile effettuare l'override della funzione get_the_title() all'interno del core woocommerce e nello specifico nel file wp-includes/post-template.php
-In realtà lo è se operiramo sullo stesso file. Ma al primo aggiornamento del plugin woocommerce perderemmo tutte le modifiche.
+Nota: Non è possibile effettuare l'override della funzione get_the_title() all'interno del file functions.php del proprio tema.
+In realtà è possibile se operiramo all'interno del core woocommerce e nello specifico nel file wp-includes/post-template.php. 
+Ma al primo aggiornamento del plugin woocommerce perderemmo tutte le modifiche.
 
 
 

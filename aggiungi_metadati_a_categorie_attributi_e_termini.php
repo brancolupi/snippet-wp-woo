@@ -19,7 +19,7 @@ function campo_meta_box_traduzione_categoria( $term ) {
     global $woocommerce;
     global $wordpress;
 
-    $term_id = isset( $term->term_id ) ? $term->term_id : $_GET['tag_ID'];
+    $term_id = isset( $term->term_id ) ? $term->term_id : ( isset( $_GET['tag_ID'] ) ? $_GET['tag_ID'] : 0 );
     $__eng_nome_categoria = get_term_meta( $term_id, '__eng_nome_categoria', true );
 
     ?>
@@ -63,7 +63,8 @@ add_action( 'woocommerce_after_edit_attribute_fields', 'campo_meta_box_traduzion
 }
 
 function campo_meta_box_traduzione_attributo( $attribute ) {
-    $attribute_id = isset( $attribute->attribute_id ) ? $attribute->attribute_id : $_GET['edit'];
+
+    $attribute_id = isset( $attribute->attribute_id ) ? $attribute->attribute_id : ( isset( $_GET['edit'] ) ? $_GET['edit'] : 0 );
     $__eng_nome_attributo = $attribute_id ? get_option( "__eng_nome_attributo_$attribute_id" ) : '';
     ?>
 
@@ -87,6 +88,7 @@ function salva_meta_box_traduzione_attributo( $attribute_id,  $tt_id ) {
         update_option( "__eng_nome_attributo_$attribute_id", $_POST['__eng_nome_attributo'] );
     }
 }
+
 
 ////////////////////////////////////////////////////////////////////////// Termini attributi (taxonomy) //////////////////////////////////////////////////////////////////////////
 

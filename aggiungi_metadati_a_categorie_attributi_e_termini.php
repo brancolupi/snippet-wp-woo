@@ -1,11 +1,18 @@
 <?php
 
-/////////////////////////////////////////////////////// Aggiungi campo traduzione nella taxonomie e attributi ////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////////////////// Categorie (taxonomy) //////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////// Aggiungi campi metadati alle taxonomie e attributi Woocommerce ////////////////////////////////////////////////////////////////////
 
 
-add_action( 'init', 'aggiungi_meta_box_traduzione_categoria' );
+// Attributi di prodotto WooCommerce: 
+// Gli attributi di prodotto sono trattati come tassonomie personalizzate. Ad esempio, se crei un attributo "Colore", WooCommerce creerà una tassonomia personalizzata chiamata pa_color.
+// Termini degli attributi di prodotto: 
+// I termini all'interno degli attributi di prodotto sono simili ai termini delle tassonomie standard (categorie e tag).
+
+
+////////////////////////////////////////////////////////////////////////// Categorie woocommerce (tassonomia standard) //////////////////////////////////////////////////////////////////////////
+
+
+add_action( 'init', 'aggiungi_meta_box_traduzione_categoria', 20 );
 
 function aggiungi_meta_box_traduzione_categoria() {
 
@@ -48,12 +55,51 @@ function salva_meta_box_traduzione_categoria( $term_id, $tt_id ) {
     }
 }
 
-
-////////////////////////////////////////////////////////////////////////// Attributi (attribute) //////////////////////////////////////////////////////////////////////////
-
+////////////////////////////////////////////////////////////////////////// Tag woocommerce (tassonomia standard) //////////////////////////////////////////////////////////////////////////
 
 
-add_action( 'init', 'aggiungi_meta_box_traduzione_attributi' );
+add_action( 'init', 'aggiungi_meta_box_traduzione_tag', 20 );
+
+function aggiungi_meta_box_traduzione_tag() {
+
+    add_action( 'product_tag_add_form_fields', 'campo_meta_box_traduzione_tag' );
+    add_action( 'product_tag_edit_form_fields', 'campo_meta_box_traduzione_tag' );
+
+}
+
+function campo_meta_box_traduzione_tag( $term ) {
+
+    $term_id = isset( $term->term_id ) ? $term->term_id : ( isset( $_GET['tag_ID'] ) ? $_GET['tag_ID'] : 0 );
+    $__eng_nome_tag = get_term_meta( $term_id, '__eng_nome_tag', true );
+    ?>
+
+    <div>
+    <label><img src="/wp-content/uploads/2024/05/uk.png" style="width:1.4rem;">&nbsp;Traduzione Inglese</label>
+        <input type="text" name="__eng_nome_tag" id="__eng_nome_tag" value="<?php echo $__eng_nome_tag; ?>">
+        <p>Inserisci la traduzione del tag in inglese</p>
+    </div>
+    <?php
+}
+
+// Salva il valore del campo metadato tradotto per i tag dei prodotti
+add_action( 'create_product_tag', 'salva_meta_box_traduzione_tag', 10, 2 );
+add_action( 'edited_product_tag', 'salva_meta_box_traduzione_tag', 10, 2  );
+
+function salva_meta_box_traduzione_tag( $term_id, $tt_id ) {
+    if( isset( $_POST['__eng_nome_tag'] ) ) {
+        update_term_meta( $term_id, '__eng_nome_tag', $_POST['__eng_nome_tag'] );
+    }
+}
+
+
+
+//////////////////////////////////////////////////////////// Attributi di prodotto woocommerce (tassonomia personalizzata) /////////////////////////////////////////////////////////////////
+
+// Gli attributi di prodotto in WooCommerce non sono tassonomie standard di WordPress, ma sono gestiti come tassonomie personalizzate quindi dovremo gestirli separatamente.
+// Gli attributi di prodotto WooCommerce, la gestione dei metadati dei termini è un po' diversa rispetto alle tassonomie standard.
+// WooCommerce memorizza i dettagli degli attributi come opzioni nel database anziché come metadati dei termini.
+
+add_action( 'init', 'aggiungi_meta_box_traduzione_attributi', 20 );
 
 function aggiungi_meta_box_traduzione_attributi() {
 
@@ -90,20 +136,34 @@ function salva_meta_box_traduzione_attributo( $attribute_id,  $tt_id ) {
 }
 
 
-////////////////////////////////////////////////////////////////////////// Termini attributi (taxonomy) //////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////// Termini degli attributi di prodotto woocommerce (taxonomy) //////////////////////////////////////////////////////////////////////////
 
+// I termini degli attributi in WooCommerce sono gestiti in modo simile alle categorie e ai tag, poiché sono tutti tipi di tassonomie. 
 
-add_action( 'init', 'aggiungi_meta_box_traduzione_termini_attributi' );
+add_action( 'init', 'aggiungi_meta_box_traduzione_termini_attributi', 20 );
 
 function aggiungi_meta_box_traduzione_termini_attributi() {
 
-add_action( 'pa_colore_add_form_fields', 'campo_meta_box_traduzione_termine' ); // Cambia 'pa_colore' con la tua tassonomia
-add_action( 'pa_colore_edit_form_fields', 'campo_meta_box_traduzione_termine' ); // Cambia 'pa_colore' con la tua tassonomia
+    $attribute_taxonomies = wc_get_attribute_taxonomies();
+    if ( $attribute_taxonomies ) {
+        foreach ( $attribute_taxonomies as $tax ) {
+            $taxonomy_name = wc_attribute_taxonomy_name( $tax->attribute_name );
+            add_action( "{$taxonomy_name}_add_form_fields", 'campo_meta_box_traduzione_termine', 10, 2 );
+            add_action( "{$taxonomy_name}_edit_form_fields", 'campo_meta_box_traduzione_termine', 10, 2 );
+        }
+    }
+
+// Es. add_action( 'pa_colore_add_form_fields', 'campo_meta_box_traduzione_termine' ); 
+// Es. add_action( 'pa_colore_edit_form_fields', 'campo_meta_box_traduzione_termine' ); 
+// Es. add_action( 'pa_taglia_edit_form_fields', 'campo_meta_box_traduzione_termine' ); 
+// Es. add_action( 'pa_taglia_edit_form_fields', 'campo_meta_box_traduzione_termine' ); 
+// ...
+
 
 }
 
 function campo_meta_box_traduzione_termine( $term ) {
-    $term_id = isset( $term->term_id ) ? $term->term_id : $_GET['tag_ID'];
+    $term_id = isset( $term->term_id ) ? $term->term_id : ( isset( $_GET['tag_ID'] ) ? $_GET['tag_ID'] : 0 );
     $__eng_nome_termine = get_term_meta( $term_id, '__eng_nome_termine', true );
     ?>
     
@@ -122,53 +182,24 @@ function salva_meta_box_traduzione_termine( $term_id, $tt_id) {
         update_term_meta( $term_id, '__eng_nome_termine', $_POST['__eng_nome_termine'] );
     }
 }
-add_action( 'created_pa_colore', 'salva_meta_box_traduzione_termine', 10, 2 ); // Cambia 'pa_colore' con la tua tassonomia
-add_action( 'edited_pa_colore', 'salva_meta_box_traduzione_termine', 10, 2 ); // Cambia 'pa_colore' con la tua tassonomia
 
-
-////////////////////////////////////////////////////////////////////////// Tag (taxonomy) //////////////////////////////////////////////////////////////////////////
-
-
-add_action( 'init', 'aggiungi_meta_box_traduzione_tag' );
-
-function aggiungi_meta_box_traduzione_tag() {
-
-    add_action( 'product_tag_add_form_fields', 'campo_meta_box_traduzione_tag' );
-    add_action( 'product_tag_edit_form_fields', 'campo_meta_box_traduzione_tag' );
-
-}
-
-function campo_meta_box_traduzione_tag( $term ) {
-
-    $term_id = isset( $term->term_id ) ? $term->term_id : $_GET['tag_ID'];
-    $__eng_nome_tag = get_term_meta( $term_id, '__eng_nome_tag', true );
-    ?>
-
-    <div>
-    <label><img src="/wp-content/uploads/2024/05/uk.png" style="width:1.4rem;">&nbsp;Traduzione Inglese</label>
-        <input type="text" name="__eng_nome_tag" id="__eng_nome_tag" value="<?php echo $__eng_nome_tag; ?>">
-        <p>Inserisci la traduzione del tag in inglese</p>
-    </div>
-    <?php
-}
-
-// Salva il valore del campo metadato tradotto per i tag dei prodotti
-add_action( 'create_product_tag', 'salva_meta_box_traduzione_tag', 10, 2 );
-add_action( 'edited_product_tag', 'salva_meta_box_traduzione_tag', 10, 2  );
-
-function salva_meta_box_traduzione_tag( $term_id, $tt_id ) {
-    if( isset( $_POST['__eng_nome_tag'] ) ) {
-        update_term_meta( $term_id, '__eng_nome_tag', $_POST['__eng_nome_tag'] );
+$attribute_taxonomies = wc_get_attribute_taxonomies();
+    if ( $attribute_taxonomies ) {
+        foreach ( $attribute_taxonomies as $tax ) {
+            $taxonomy_name = wc_attribute_taxonomy_name( $tax->attribute_name );
+            add_action( "created_{$taxonomy_name}", 'campo_meta_box_traduzione_termine', 10, 2 );
+            add_action( "edited_{$taxonomy_name}", 'campo_meta_box_traduzione_termine', 10, 2 );
+        }
     }
-}
 
 
-// Note:
-// Gli attributi di prodotto in WooCommerce non sono tassonomie standard di WordPress, ma sono gestiti come tassonomie personalizzate quindi dovremo gestirli separatamente.
-// I termini degli attributi in WooCommerce sono gestiti in modo simile alle categorie e ai tag, poiché sono tutti tipi di tassonomie. 
-// Questo significa che puoi utilizzare gli stessi meccanismi di WordPress per aggiungere e salvare metadati personalizzati.
-// Quindi possiamo gestirli o tutti con lo snippet che segue o singolarmente con gli snippet specifici qui sopra.
+// Es. add_action( 'created_pa_colore', 'salva_meta_box_traduzione_termine', 10, 2 ); 
+// Es. add_action( 'edited_pa_colore', 'salva_meta_box_traduzione_termine', 10, 2 ); 
+// Es. add_action( 'created_pa_taglia', 'salva_meta_box_traduzione_termine', 10, 2 ); 
+// Es. add_action( 'edited_pa_taglia', 'salva_meta_box_traduzione_termine', 10, 2 ); 
+// ...
 
 
 
-?>
+// Note: 
+// Priorità di init aumentata a 20: Questo assicura che WooCommerce abbia registrato le sue tassonomie prima che il tuo codice venga eseguito.

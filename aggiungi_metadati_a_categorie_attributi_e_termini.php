@@ -86,4 +86,8 @@ function salva_meta_box_traduzione_attributo( $attribute_id,  $tt_id ) {
 }
 
 
+// Note:
+// I termini degli attributi in WooCommerce sono gestiti in modo simile alle categorie e ai tag, poiché sono tutti tipi di tassonomie. 
+// Questo significa che puoi utilizzare gli stessi meccanismi di WordPress per aggiungere e salvare metadati personalizzati.
+
 ?>

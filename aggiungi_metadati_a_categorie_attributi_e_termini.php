@@ -203,3 +203,20 @@ $attribute_taxonomies = wc_get_attribute_taxonomies();
 
 // Note: 
 // Priorità di init aumentata a 20: Questo assicura che WooCommerce abbia registrato le sue tassonomie prima che il tuo codice venga eseguito.
+//
+// Actions per aggiungere metabox:
+// Categorie di post:
+// add_action( 'category_add_form_fields', 'campo_meta_box_traduzione_taxonomy', 10, 2 );  
+// add_action( 'category_edit_form_fields', 'campo_meta_box_traduzione_taxonomy', 10, 2 );
+// Tag di post:
+// add_action( 'post_tag_add_form_fields', 'campo_meta_box_traduzione_taxonomy', 10, 2 );
+// add_action( 'post_tag_edit_form_fields', 'campo_meta_box_traduzione_taxonomy', 10, 2 );
+// WooCommerce categorie di prodotto:
+// add_action( 'product_cat_add_form_fields', 'campo_meta_box_traduzione_taxonomy', 10, 2 );
+// add_action( 'product_cat_edit_form_fields', 'campo_meta_box_traduzione_taxonomy', 10, 2 );
+// WooCommerce tag di prodotto:
+// add_action( 'product_tag_add_form_fields', 'campo_meta_box_traduzione_taxonomy', 10, 2 );
+// add_action( 'product_tag_edit_form_fields', 'campo_meta_box_traduzione_taxonomy', 10, 2 );
+// Actions per salvare i metadati:
+// add_action( 'created_term', 'salva_meta_box_traduzione_taxonomy', 10, 2 );
+// add_action( 'edited_term', 'salva_meta_box_traduzione_taxonomy', 10, 2 );
